@@ -189,6 +189,15 @@
      <Compile Include="Assets\Addons\RetinaPro\retinaProIgnoreUIRoot.cs" />
      <Compile Include="Assets\Addons\RetinaPro\retinaProParent.cs" />
      <Compile Include="Assets\Addons\RetinaPro\retinaProUtil.cs" />
+     <Compile Include="Assets\Scripts\Entities\Client.cs" />
+     <Compile Include="Assets\Scripts\Entities\Entity.cs" />
+     <Compile Include="Assets\Scripts\Entities\Target.cs" />
+     <Compile Include="Assets\Scripts\GameModel.cs" />
+     <Compile Include="Assets\Scripts\Grid\Grid.cs" />
+     <Compile Include="Assets\Scripts\Grid\GridCell.cs" />
+     <Compile Include="Assets\Scripts\Path\PathDrawer.cs" />
+     <Compile Include="Assets\Scripts\Path\PathListener.cs" />
+     <Compile Include="Assets\Scripts\Shanghai.cs" />
      <None Include="Assets\Addons\NGUI\Examples\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\Addons\NGUI\ReadMe - 3.5.7.txt" />
      <None Include="Assets\Addons\NGUI\Resources\Shaders\Unlit - Text 2.shader" />
@@ -205,6 +214,7 @@
      <None Include="Assets\Addons\RetinaPro\XMLParser\XMLParser MIT-license.txt" />
      <None Include="Assets\Textures\rp_atlases\iPhone@2x\fontAtlas\fontHelv.txt" />
      <None Include="Assets\Addons\NGUI\Examples\Atlases\SciFi\SciFi Font - Header.txt" />
+     <None Include="Assets\RetinaPro\Resources\RetinaProData.txt" />
      <None Include="Assets\Addons\NGUI\Resources\Shaders\Unlit - Transparent Colored 1.shader" />
      <None Include="Assets\Addons\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
      <None Include="Assets\Addons\NGUI\Resources\Shaders\Unlit - Transparent Colored 3.shader" />

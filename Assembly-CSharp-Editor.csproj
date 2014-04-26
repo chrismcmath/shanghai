@@ -150,6 +150,7 @@
      <None Include="Assets\Addons\RetinaPro\XMLParser\XMLParser MIT-license.txt" />
      <None Include="Assets\Textures\rp_atlases\iPhone@2x\fontAtlas\fontHelv.txt" />
      <None Include="Assets\Addons\NGUI\Examples\Atlases\SciFi\SciFi Font - Header.txt" />
+     <None Include="Assets\RetinaPro\Resources\RetinaProData.txt" />
      <None Include="Assets\Addons\NGUI\Resources\Shaders\Unlit - Transparent Colored 1.shader" />
      <None Include="Assets\Addons\NGUI\Examples\Atlases\Fantasy\Fantasy Font - Normal.txt" />
      <None Include="Assets\Addons\NGUI\Resources\Shaders\Unlit - Transparent Colored 3.shader" />

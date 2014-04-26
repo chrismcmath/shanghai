@@ -6,9 +6,12 @@ using Shanghai.Controllers;
 
 namespace Shanghai {
     public class Shanghai : MonoBehaviour {
-        private GameModel _Model;
 
         public PlayGridController GridController;
+        public UILabel DebugLabel;
+
+        private GameModel _Model;
+        private float _CurrentTime;
 
         public void Awake() {
             _Model = new GameModel();
@@ -23,6 +26,8 @@ namespace Shanghai {
         }
 
         public void Update() {
+            _CurrentTime += Time.deltaTime;
+            DebugLabel.text = string.Format("{0}", _CurrentTime);
             //Process new events
         }
 

@@ -565,6 +565,7 @@ public class UICamera : MonoBehaviour
 
 	static public bool Raycast (Vector3 inPos, out RaycastHit hit)
 	{
+        Debug.Log("Raycasting + " + inPos + " list: " + list.size);
 		for (int i = 0; i < list.size; ++i)
 		{
 			UICamera cam = list.buffer[i];
@@ -599,6 +600,7 @@ public class UICamera : MonoBehaviour
 			else if (cam.eventType == EventType.UI)
 			{
 				RaycastHit[] hits = Physics.RaycastAll(ray, dist, mask);
+                Debug.Log("hits : " + hits.Length);
 
 				if (hits.Length > 1)
 				{

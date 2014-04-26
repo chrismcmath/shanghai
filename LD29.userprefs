@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Addons/RetinaPro/Editor/retinaProDevice.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Addons/NGUI/Scripts/UI/UICamera.cs">
     <Files>
       <File FileName="Assets/Addons/RetinaPro/Editor/retinaProDevice.cs" Line="17" Column="29" />
+      <File FileName="Assets/Addons/NGUI/Scripts/UI/UIAnchor.cs" Line="33" Column="2" />
+      <File FileName="Assets/Addons/NGUI/Scripts/UI/UICamera.cs" Line="61" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

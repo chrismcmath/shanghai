@@ -7,11 +7,8 @@ namespace Shanghai.Controllers {
 
         private UITable _Table;
 
-        public void Awake() {
-            _Table = gameObject.GetComponent<UITable>();
-        }
-
         public void CreateTable(int size) {
+            _Table = gameObject.GetComponent<UITable>();
             if (_Table == null) {
                 Debug.Log("UITable not initialized ");
                 return;

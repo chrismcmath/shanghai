@@ -11,6 +11,10 @@ namespace Shanghai.Path {
             Debug.Log("Awake");
         }
 
+        public void OnHover(bool hover) {
+            Debug.Log("OnHover " + hover);
+        }
+
         public void OnDrag(Vector2 delta) {
             Debug.Log("OnDrag " + delta);
         }

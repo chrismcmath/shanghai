@@ -10,19 +10,27 @@ namespace Shanghai {
         public PlayGridController GridController;
         public UILabel DebugLabel;
 
-        private GameModel _Model;
         private float _CurrentTime;
 
         public void Awake() {
-            _Model = new GameModel();
-
             if (GridController != null) {
-                GridController.CreateTable(GameModel.GRID_SIZE+1);
+                GridController.CreateTable(GameModel.GRID_SIZE);
             } else {
                 Debug.Log("GridController not set");
             }
 
             // Update GUI
+
+            //Messenger
+            Messenger<PlayableCell>.AddListener(Grid.Grid.EVENT_CELL_UPDATED, OnCellUpdated);
+        }
+
+        public void OnDestroy() {
+            Messenger<PlayableCell>.RemoveListener(Grid.Grid.EVENT_CELL_UPDATED, OnCellUpdated);
+        }
+
+        private void OnCellUpdated(PlayableCell cell) {
+            GridController.UpdateCell(cell.Key, "horizontal", "", "");
         }
 
         public void Update() {

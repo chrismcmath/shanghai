@@ -3,10 +3,12 @@ using System.Collections;
 
 namespace Shanghai.Grid {
     public class GridCell {
-        public Vector2 Key;
-        public bool Valid = true;
 
-        public GridCell(Vector2 key) {
+        public IntVect2 Key;
+        public bool Valid = true;
+        public bool Selected = false;
+
+        public GridCell(IntVect2 key) {
             Key = key;
         }
     }

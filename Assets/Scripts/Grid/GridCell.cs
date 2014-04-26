@@ -2,14 +2,12 @@
 using System.Collections;
 
 namespace Shanghai.Grid {
-    public class GridCell : MonoBehaviour {
+    public class GridCell : {
+        public Vector2 Key;
+        public bool Valid = true;
 
-        void Start () {
-
-        }
-
-        void Update () {
-
+        public GridCell(Vector2 key) {
+            Key = key;
         }
     }
 }

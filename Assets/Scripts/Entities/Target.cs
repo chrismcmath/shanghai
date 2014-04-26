@@ -6,6 +6,7 @@ namespace Shanghai.Entities {
     public class Target : Entity {
         private int _Health = 100;
 
+        public Target() {}
         public Target(string id) : base (id) {
         }
     }

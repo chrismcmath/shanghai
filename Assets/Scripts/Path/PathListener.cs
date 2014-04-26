@@ -11,8 +11,8 @@ namespace Shanghai.Path {
             Debug.Log("Awake");
         }
 
-        public void OnClick() {
-            Debug.Log("OnClick");
+        public void OnDrag(Vector2 delta) {
+            Debug.Log("OnDrag " + delta);
         }
     }
 }

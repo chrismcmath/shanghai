@@ -189,12 +189,17 @@
      <Compile Include="Assets\Addons\RetinaPro\retinaProIgnoreUIRoot.cs" />
      <Compile Include="Assets\Addons\RetinaPro\retinaProParent.cs" />
      <Compile Include="Assets\Addons\RetinaPro\retinaProUtil.cs" />
+     <Compile Include="Assets\Scripts\Controllers\PlayGridController.cs" />
      <Compile Include="Assets\Scripts\Entities\Client.cs" />
      <Compile Include="Assets\Scripts\Entities\Entity.cs" />
      <Compile Include="Assets\Scripts\Entities\Target.cs" />
      <Compile Include="Assets\Scripts\GameModel.cs" />
+     <Compile Include="Assets\Scripts\Grid\ChanceCell.cs" />
      <Compile Include="Assets\Scripts\Grid\Grid.cs" />
      <Compile Include="Assets\Scripts\Grid\GridCell.cs" />
+     <Compile Include="Assets\Scripts\Grid\PlayableCell.cs" />
+     <Compile Include="Assets\Scripts\Grid\SourceCell.cs" />
+     <Compile Include="Assets\Scripts\Grid\UnplayableCell.cs" />
      <Compile Include="Assets\Scripts\Path\PathDrawer.cs" />
      <Compile Include="Assets\Scripts\Path\PathListener.cs" />
      <Compile Include="Assets\Scripts\Shanghai.cs" />

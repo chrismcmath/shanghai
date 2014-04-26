@@ -11,9 +11,7 @@ namespace Shanghai.Grid {
             Dimensions = new Vector2(size, size);
 
             for (int y = 0; y < size; y++) {
-                Debug.Log("y: " + y);
                 for (int x = 0; x < size; x++) {
-                    Debug.Log("x: " + x);
                     /* top row */
                     if (y == 0) {
                         /* top left is an empty cell*/

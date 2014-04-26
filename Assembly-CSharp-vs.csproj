@@ -189,6 +189,7 @@
      <Compile Include="Assets\Addons\RetinaPro\retinaProIgnoreUIRoot.cs" />
      <Compile Include="Assets\Addons\RetinaPro\retinaProParent.cs" />
      <Compile Include="Assets\Addons\RetinaPro\retinaProUtil.cs" />
+     <Compile Include="Assets\Scripts\Controllers\CellController.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayGridController.cs" />
      <Compile Include="Assets\Scripts\Entities\Client.cs" />
      <Compile Include="Assets\Scripts\Entities\Entity.cs" />

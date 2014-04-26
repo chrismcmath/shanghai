@@ -14,6 +14,7 @@ namespace Shanghai {
             _Model = new GameModel();
 
             if (GridController != null) {
+                GridController.CreateTable(GameModel.GRID_SIZE+1);
             } else {
                 Debug.Log("GridController not set");
             }

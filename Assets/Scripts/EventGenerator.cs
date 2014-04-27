@@ -9,6 +9,7 @@ using Shanghai.Grid;
 namespace Shanghai {
     public class EventGenerator {
         public static readonly string EVENT_MISSION_CREATED = "EVENT_MISSION_CREATED";
+        public static readonly string EVENT_SOURCE_CREATED = "EVENT_SOURCE_CREATED";
 
         private GameModel _Model;
         private ShanghaiConfig _Config;
@@ -33,6 +34,10 @@ namespace Shanghai {
 
         public bool GenerateSource() {
             int bounty = _Config.BountyMedium + (Random.Range(0, _Config.BountyDeviance*2)) - _Config.BountyDeviance;
+            string targetID = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value.ID;
+
+            Source source = new Source(bounty, targetID);
+            Messenger<Source>.Broadcast(EVENT_SOURCE_CREATED, source);
             return true;
         }
     }

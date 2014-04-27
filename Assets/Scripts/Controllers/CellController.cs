@@ -14,7 +14,7 @@ namespace Shanghai.Controllers {
 
         public IntVect2 Key;
         private GameObject _CurrentObject = null;
-        private bool _IsDragging = false;
+
         public UISprite PipeSprite;
         public UISprite ClientSprite;
         public UISprite TargetSprite;
@@ -26,7 +26,7 @@ namespace Shanghai.Controllers {
             UpdateSprite(ClientSprite, CLIENT_PREFIX, cell.ClientID);
             ProgressSprite.fillAmount = cell.Progress;
 
-            BountyLabel.text = cell.Bounty > 0 ? string.Format("{0}", cell.Bounty) : "";
+            BountyLabel.text = cell.Bounty > 0 ? string.Format("{0}元", cell.Bounty) : "";
 
             if (cell.TargetID != "") {
                 TargetSprite.alpha = 1;
@@ -93,10 +93,7 @@ namespace Shanghai.Controllers {
         }
 
         public void OnDrag(Vector2 delta) {
-            if (!_IsDragging) {
-                Messenger<IntVect2>.Broadcast(EVENT_CELL_DRAGGED, Key);
-                _IsDragging = true;
-            }
+            Messenger<IntVect2>.Broadcast(EVENT_CELL_DRAGGED, Key);
         }
 
         public void OnDragOver(GameObject go) {
@@ -105,7 +102,6 @@ namespace Shanghai.Controllers {
 
         public void OnDragEnd() {
             Messenger.Broadcast(EVENT_CELL_DRAG_END);
-            _IsDragging = false;
         }
     }
 }

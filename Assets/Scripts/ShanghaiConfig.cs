@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Shanghai {
     public class ShanghaiConfig : MonoSingleton<ShanghaiConfig> {
-        public float MissionInterval = 2.0f;
-        public float TelegramInterval = 2.0f;
-        public float CellFillPerSecond = 0.5f;
+        public float MissionInterval = 8.0f; //the 'agents' that appear on the map
+        public float SourceInterval = 3.0f; //the telegrams that come in
+        public float CellFillPerSecond = 0.5f; //the amount a cell is filled per second (1 is full)
 
         public int BountyMedium = 1000;
         public int BountyDeviance = 1000;

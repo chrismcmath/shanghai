@@ -6,7 +6,6 @@ using System.Linq;
 namespace Shanghai.Grid {
     public class Grid {
         public static readonly string EVENT_SET_PATH = "EVENT_SET_PATH";
-        public static readonly string EVENT_CELL_UPDATED = "EVENT_CELL_UPDATED";
         public static readonly string EVENT_GRID_UPDATED = "EVENT_GRID_UPDATED";
         public static readonly string EVENT_MISSION_FAILED = "EVENT_MISSION_FAILED";
 
@@ -14,6 +13,8 @@ namespace Shanghai.Grid {
         public List<List<PlayableCell>> Cells {
             get { return _Cells; }
         }
+
+        private SourceRow _SourceRow;
 
         public Grid(int size) {
             for (int y = 0; y < size; y++) {
@@ -23,6 +24,8 @@ namespace Shanghai.Grid {
                 }
                 _Cells.Add(row);
             }
+
+            _SourceRow = new SourceRow(size);
         }
 
         public bool ValidateCellInput(IntVect2 key, List<IntVect2> path) {
@@ -40,6 +43,18 @@ namespace Shanghai.Grid {
 
         public PlayableCell GetCell(IntVect2 key) {
             return _Cells[key.y][key.x];
+        }
+
+        public SourceCell GetSourceCell(int key) {
+            return _SourceRow.GetCell(key);
+        }
+
+        public Source GetSourceFromCell(int key) {
+            return _SourceRow.GetCell(key).Source;
+        }
+
+        public void ResetSourceCell(int key) {
+            _SourceRow.ResetSourceCell(key);
         }
 
         public void SetPath(List<IntVect2> path) {
@@ -112,6 +127,10 @@ namespace Shanghai.Grid {
             Messenger<List<List<PlayableCell>>>.Broadcast(EVENT_GRID_UPDATED, _Cells);
         }
 
+        public void OnTelegramDropped(int key, Source source) {
+            _SourceRow.UpdateSourceCell(key, source);
+        }
+
         private bool CheckPrevCellPositions(IntVect2 key, List<IntVect2> path) {
             if (CellInPath(key, path)) {
                 Messenger.Broadcast(EVENT_MISSION_FAILED);
@@ -132,8 +151,7 @@ namespace Shanghai.Grid {
         private bool CellIsConnected(IntVect2 key, List<IntVect2> path) {
             if (path.Count < 1) {
                 if (key.y == 0) {
-                    //TODO: check clients
-                    return true;
+                    return _SourceRow.HasSource(key.x);
                 }
             } else {
                 IntVect2 prevKey = GetCell(path[path.Count - 1]).Key;

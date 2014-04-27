@@ -9,6 +9,7 @@ namespace Shanghai.Path {
     public class PathDrawer : MonoBehaviour {
         private List<IntVect2> _Path = new List<IntVect2>();
         private GameModel _Model;
+        private IntVect2 _CurrentCell = null;
 
         public void Awake() {
             Messenger<IntVect2>.AddListener(CellController.EVENT_CELL_DRAGGED, OnCellDragged);
@@ -22,6 +23,9 @@ namespace Shanghai.Path {
         }
 
         private void OnCellDragged(IntVect2 cellKey) {
+            if (cellKey == _CurrentCell) return;
+            _CurrentCell = cellKey;
+
             if (_Model.CanDraw) {
                 if (_Model.Grid.ValidateCellInput(cellKey, _Path)){
                     _Path.Add(cellKey);

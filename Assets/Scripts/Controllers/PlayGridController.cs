@@ -12,12 +12,12 @@ namespace Shanghai.Controllers {
         private UITable _Table;
 
         public void Awake() {
-            Messenger<PlayableCell>.AddListener(Grid.Grid.EVENT_CELL_UPDATED, OnCellUpdated);
+            Messenger<PlayableCell>.AddListener(PlayableCell.EVENT_CELL_UPDATED, OnCellUpdated);
             Messenger<List<List<PlayableCell>>>.AddListener(Grid.Grid.EVENT_GRID_UPDATED, OnGridUpdated);
         }
 
         public void OnDestroy() {
-            Messenger<PlayableCell>.RemoveListener(Grid.Grid.EVENT_CELL_UPDATED, OnCellUpdated);
+            Messenger<PlayableCell>.RemoveListener(PlayableCell.EVENT_CELL_UPDATED, OnCellUpdated);
             Messenger<List<List<PlayableCell>>>.RemoveListener(Grid.Grid.EVENT_GRID_UPDATED, OnGridUpdated);
         }
 

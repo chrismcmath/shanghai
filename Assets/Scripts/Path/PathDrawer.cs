@@ -29,7 +29,7 @@ namespace Shanghai.Path {
 
         private void OnCellDragEnd () {
             foreach(IntVect2 key in _Path) {
-                Debug.Log("x " + key.x + " y " + key.y);
+                Debug.Log("END: x " + key.x + " y " + key.y);
             }
             _Path = new List<IntVect2>();
         }

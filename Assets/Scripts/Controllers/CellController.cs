@@ -18,11 +18,22 @@ namespace Shanghai.Controllers {
         public UISprite PipeSprite;
         public UISprite ClientSprite;
         public UISprite TargetSprite;
+        public UISprite ProgressSprite;
+        public UILabel BountyLabel;
 
         public void UpdateCell(PlayableCell cell) {
             UpdateSprite(PipeSprite, PIPE_PREFIX, GetPipeString(cell.Pipe));
             UpdateSprite(ClientSprite, CLIENT_PREFIX, cell.ClientID);
-            UpdateSprite(TargetSprite, TARGET_PREFIX, cell.TargetID);
+            ProgressSprite.fillAmount = cell.Progress;
+
+            BountyLabel.text = cell.Bounty > 0 ? string.Format("{0}", cell.Bounty) : "";
+
+            if (cell.TargetID != "") {
+                TargetSprite.alpha = 1;
+                TargetSprite.color = ShanghaiConfig.Instance.MinistryColours[cell.TargetID];
+            } else {
+                TargetSprite.alpha = 0;
+            }
         }
 
         private void UpdateSprite(UISprite sprite, string prefix, string state) {

@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 using Shanghai.Grid;
 
 namespace Shanghai.Controllers {
@@ -11,10 +13,12 @@ namespace Shanghai.Controllers {
 
         public void Awake() {
             Messenger<PlayableCell>.AddListener(Grid.Grid.EVENT_CELL_UPDATED, OnCellUpdated);
+            Messenger<List<List<PlayableCell>>>.AddListener(Grid.Grid.EVENT_GRID_UPDATED, OnGridUpdated);
         }
 
         public void OnDestroy() {
             Messenger<PlayableCell>.RemoveListener(Grid.Grid.EVENT_CELL_UPDATED, OnCellUpdated);
+            Messenger<List<List<PlayableCell>>>.RemoveListener(Grid.Grid.EVENT_GRID_UPDATED, OnGridUpdated);
         }
 
         private void OnCellUpdated(PlayableCell cell) {
@@ -23,6 +27,14 @@ namespace Shanghai.Controllers {
                 CellController cellCtr = cellTrans.GetComponent<CellController>();
                 if (cellCtr != null) {
                     cellCtr.UpdateCell(cell);
+                }
+            }
+        }
+
+        private void OnGridUpdated(List<List<PlayableCell>> cells) {
+            foreach(List<PlayableCell> row in cells) {
+                foreach(PlayableCell cell in row) {
+                    OnCellUpdated(cell);
                 }
             }
         }
@@ -47,7 +59,6 @@ namespace Shanghai.Controllers {
                     cellCtr.Key = new IntVect2(x, y);
 
                     cell.name = string.Format(CELL_NAME_FORMAT, y, x);
-                    Debug.Log("created " + cell.name);
                     cell.transform.parent = transform;
                     cell.transform.localPosition = Vector3.zero;
                     cell.transform.localScale = Vector3.one;

@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Shanghai.Grid {
     public class Grid {
+        public static readonly string EVENT_SET_PATH = "EVENT_SET_PATH";
         public static readonly string EVENT_CELL_UPDATED = "EVENT_CELL_UPDATED";
-        public Vector2 Dimensions;
+        public static readonly string EVENT_GRID_UPDATED = "EVENT_GRID_UPDATED";
+        public static readonly string EVENT_MISSION_FAILED = "EVENT_MISSION_FAILED";
+
         private List<List<PlayableCell>> _Cells = new List<List<PlayableCell>>();
 
         public Grid(int size) {
-            Dimensions = new Vector2(size, size);
-
             for (int y = 0; y < size; y++) {
                 List<PlayableCell> row = new List<PlayableCell>();
                 for (int x = 0; x < size; x++) {
@@ -22,11 +24,12 @@ namespace Shanghai.Grid {
 
         public bool ValidateCellInput(IntVect2 key, List<IntVect2> path) {
             PlayableCell cell = GetCell(key);
-            Debug.Log("key " + key + " valid " + cell.Valid + " selected " + cell.Selected + " connected " + CellIsConnected(key, path));
-            if (cell.Valid && !cell.Selected && CellIsConnected(key, path)) {
-                cell.Selected = true;
+            if (CellIsConnected(key, path) &&
+                    CheckPrevCellPositions(key, path) &&
+                    cell.Valid) {
+                cell.Valid = false;
                 UpdateCellPipeType(cell, path);
-                Messenger<PlayableCell>.Broadcast(EVENT_CELL_UPDATED, cell);
+                Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
                 return true;
             }
             return false;
@@ -34,6 +37,70 @@ namespace Shanghai.Grid {
 
         public PlayableCell GetCell(IntVect2 key) {
             return _Cells[key.y][key.x];
+        }
+
+        public void SetPath(List<IntVect2> path) {
+            if (path.Count < 1) {
+                return;
+            }
+            PlayableCell finalCell = GetCell(path[path.Count - 1]);
+            if (finalCell.TargetID == "") {
+                ResetCells(path);
+                Messenger.Broadcast(EVENT_MISSION_FAILED);
+                return;
+            } else {
+                //TODO create an active mission.
+            }
+            Messenger<List<IntVect2>>.Broadcast(EVENT_SET_PATH, path);
+        }
+
+        public bool GetRandomCell(ref IntVect2 key) {
+            List<PlayableCell> availableCells = new List<PlayableCell>();
+            foreach(List<PlayableCell> row in _Cells) {
+                foreach(PlayableCell cell in row) {
+                    if (cell.IsFree()) {
+                        availableCells.Add(cell);
+                    }
+                }
+            }
+
+            if (availableCells.Count < 1) {
+                return false;
+            } else {
+                key = availableCells.ElementAt(Random.Range(0, availableCells.Count)).Key;
+                return true;
+            }
+        }
+
+        public void CellProgressed(IntVect2 cellKey, float progress) {
+            PlayableCell cell = GetCell(cellKey);
+            cell.Progress = progress;
+            Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
+        }
+
+        public void ResetCells(List<IntVect2> path) {
+            foreach (IntVect2 cellKey in path) {
+                PlayableCell cell = GetCell(cellKey);
+                cell.Reset();
+            }
+            Messenger<List<List<PlayableCell>>>.Broadcast(EVENT_GRID_UPDATED, _Cells);
+        }
+
+        private bool CheckPrevCellPositions(IntVect2 key, List<IntVect2> path) {
+            if (CellInPath(key, path)) {
+                Messenger.Broadcast(EVENT_MISSION_FAILED);
+                return false;
+            }
+            return true;
+        }
+
+        private bool CellInPath(IntVect2 key, List<IntVect2> path) {
+            foreach (IntVect2 cellKey in path) {
+                if (cellKey == key) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private bool CellIsConnected(IntVect2 key, List<IntVect2> path) {
@@ -124,8 +191,7 @@ namespace Shanghai.Grid {
                     Debug.Log("Prev cell cant be NONE");
                     break;
             }
-            Debug.Log("update prev cell, type: " + prevCell.Pipe);
-            Messenger<PlayableCell>.Broadcast(EVENT_CELL_UPDATED, prevCell);
+            Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, prevCell);
         }
     }
 }

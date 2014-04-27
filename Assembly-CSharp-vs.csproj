@@ -196,9 +196,13 @@
      <Compile Include="Assets\Libs\Singleton.cs" />
      <Compile Include="Assets\Scripts\Controllers\CellController.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayGridController.cs" />
+     <Compile Include="Assets\Scripts\Entities\ActiveMission.cs" />
      <Compile Include="Assets\Scripts\Entities\Client.cs" />
      <Compile Include="Assets\Scripts\Entities\Entity.cs" />
+     <Compile Include="Assets\Scripts\Entities\Mission.cs" />
+     <Compile Include="Assets\Scripts\Entities\Source.cs" />
      <Compile Include="Assets\Scripts\Entities\Target.cs" />
+     <Compile Include="Assets\Scripts\EventGenerator.cs" />
      <Compile Include="Assets\Scripts\GameModel.cs" />
      <Compile Include="Assets\Scripts\Grid\ChanceCell.cs" />
      <Compile Include="Assets\Scripts\Grid\Grid.cs" />
@@ -208,6 +212,8 @@
      <Compile Include="Assets\Scripts\Grid\UnplayableCell.cs" />
      <Compile Include="Assets\Scripts\Path\PathDrawer.cs" />
      <Compile Include="Assets\Scripts\Shanghai.cs" />
+     <Compile Include="Assets\Scripts\ShanghaiConfig.cs" />
+     <Compile Include="Assets\Scripts\ShanghaiUtils.cs" />
      <None Include="Assets\Addons\NGUI\Examples\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\Addons\NGUI\ReadMe - 3.5.7.txt" />
      <None Include="Assets\Addons\NGUI\Resources\Shaders\Unlit - Text 2.shader" />

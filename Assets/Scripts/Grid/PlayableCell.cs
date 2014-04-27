@@ -3,6 +3,8 @@ using System.Collections;
 
 namespace Shanghai.Grid {
     public class PlayableCell : GridCell {
+        public static readonly string EVENT_CELL_UPDATED = "EVENT_CELL_UPDATED";
+
         public enum PipeType {NONE=0, HORI, VERT, NE, NW, SE, SW, LEFT, RIGHT, TOP, BOTTOM};
 
         private PipeType _Pipe = PipeType.NONE;
@@ -10,13 +12,31 @@ namespace Shanghai.Grid {
             get { return _Pipe; }
             set {
                 _Pipe = value;
-                Debug.Log("set Pipe to value " + value);
             }
         }
         public string ClientID = "";
         public string TargetID = "";
 
+        public int Bounty = 0;
+
+        public float Progress = 0.0f;
+        public float TotalProgress = 0.0f;
+
         public PlayableCell(IntVect2 key) : base(key) {
+        }
+
+        public void Reset() {
+            ClientID = "";
+            TargetID = "";
+            Bounty = 0;
+            Progress = 0.0f;
+            TotalProgress = 0.0f;
+            Pipe = PipeType.NONE;
+            Valid = true;
+        }
+
+        public bool IsFree() {
+            return Pipe == PipeType.NONE && ClientID == "" && TargetID == "";
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Shanghai.Entities;
 using Shanghai.Grid;
 using Shanghai.Path;
+using Shanghai.Controllers;
 
 namespace Shanghai {
     public class GameModel : MonoSingleton<GameModel> {
@@ -61,6 +62,7 @@ namespace Shanghai {
             Messenger<Mission>.AddListener(EventGenerator.EVENT_MISSION_CREATED, OnMissionCreated);
             Messenger<IntVect2, float>.AddListener(ActiveMission.EVENT_CELL_PROGRESSED, OnCellProgressed);
             Messenger<List<IntVect2>, Source>.AddListener(ActiveMission.EVENT_PACKAGE_DELIVERED, OnPackageDelivered);
+            Messenger<int, Source>.AddListener(TelegramController.EVENT_TELEGRAM_DROPPED, OnTelegramDropped);
             Init();
         }
 
@@ -68,6 +70,7 @@ namespace Shanghai {
             Messenger<Mission>.RemoveListener(EventGenerator.EVENT_MISSION_CREATED, OnMissionCreated);
             Messenger<IntVect2, float>.RemoveListener(ActiveMission.EVENT_CELL_PROGRESSED, OnCellProgressed);
             Messenger<List<IntVect2>, Source>.RemoveListener(ActiveMission.EVENT_PACKAGE_DELIVERED, OnPackageDelivered);
+            Messenger<int, Source>.RemoveListener(TelegramController.EVENT_TELEGRAM_DROPPED, OnTelegramDropped);
         }
 
         public void Init() {
@@ -115,6 +118,7 @@ namespace Shanghai {
 
         public void RemoveActiveMission(ActiveMission actMiss) {
             _Grid.ResetCells(actMiss.Path);
+            _Grid.ResetSourceCell(actMiss.Path[0].x);
             _Missions.Remove(actMiss.Mission);
             _ActiveMissions.Remove(actMiss);
         }
@@ -131,10 +135,14 @@ namespace Shanghai {
             _Grid.CellProgressed(cellKey, progress);
         }
 
-        private void OnPackageDelivered (List<IntVect2> path, Source source) {
+        private void OnPackageDelivered(List<IntVect2> path, Source source) {
             Messenger<Source>.Broadcast(EVENT_SOURCE_CHANGED, source, MessengerMode.DONT_REQUIRE_LISTENER);
             _Grid.IncreaseCellBounty(path[path.Count-1], ShanghaiConfig.Instance.PacketSize);
             _Grid.ResetCellsProgress(path);
+        }
+        
+        private void OnTelegramDropped(int key, Source source) {
+            _Grid.OnTelegramDropped(key, source);
         }
     }
 }

@@ -31,9 +31,7 @@ namespace Shanghai.Grid {
                 CurrentCellID++;
                 if (CurrentCellID >= Path.Count) {
                     if (Source.Bounty > _Config.PacketSize) {
-                        Debug.Log("source bounty was " + Source.Bounty);
                         Source.Bounty -= _Config.PacketSize;
-                        Debug.Log("source bounty is " + Source.Bounty);
                         GameModel.Instance.Money += _Config.PacketSize;
                         CurrentCellID = 0;
                         Messenger<List<IntVect2>, Source>.Broadcast(EVENT_PACKAGE_DELIVERED, Path, Source);

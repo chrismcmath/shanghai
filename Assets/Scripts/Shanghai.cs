@@ -9,10 +9,12 @@ using Shanghai.Controllers;
 namespace Shanghai {
     public class Shanghai : MonoBehaviour {
         public PlayGridController GridController;
+        public SourceRowController SourceRowController;
         public UILabel DebugLabel;
 
         private float _CurrentTime;
-        private float _EventInterval = 0.0f;
+        private float _MissionInterval = 0.0f;
+        private float _SourceInterval = 0.0f;
         private GameModel _Model;
         private ShanghaiConfig _Config;
         private EventGenerator _Generator;
@@ -27,16 +29,21 @@ namespace Shanghai {
             } else {
                 Debug.Log("GridController not set");
             }
+            if (SourceRowController != null) {
+                SourceRowController.CreateTable(GameModel.GRID_SIZE);
+            } else {
+                Debug.Log("SourceRowController not set");
+            }
 
             // Update GUI
 
-            Messenger<PlayableCell>.AddListener(Grid.Grid.EVENT_CELL_UPDATED, OnCellUpdated);
+            Messenger<PlayableCell>.AddListener(PlayableCell.EVENT_CELL_UPDATED, OnCellUpdated);
             Messenger<List<IntVect2>>.AddListener(Grid.Grid.EVENT_SET_PATH, OnSetPath);
             Messenger.AddListener(Grid.Grid.EVENT_MISSION_FAILED, OnMissionFailed);
         }
 
         public void OnDestroy() {
-            Messenger<PlayableCell>.RemoveListener(Grid.Grid.EVENT_CELL_UPDATED, OnCellUpdated);
+            Messenger<PlayableCell>.RemoveListener(PlayableCell.EVENT_CELL_UPDATED, OnCellUpdated);
             Messenger<List<IntVect2>>.RemoveListener(Grid.Grid.EVENT_SET_PATH, OnSetPath);
             Messenger.RemoveListener(Grid.Grid.EVENT_MISSION_FAILED, OnMissionFailed);
         }
@@ -47,12 +54,17 @@ namespace Shanghai {
 
         public void Update() {
             _CurrentTime += Time.deltaTime;
-            _EventInterval -= Time.deltaTime;
-            DebugLabel.text = string.Format("{0:00}\n{1:00}", _CurrentTime, _EventInterval);
+            _MissionInterval -= Time.deltaTime;
+            _SourceInterval -= Time.deltaTime;
+            DebugLabel.text = string.Format("{0:00}\nMission:{1:00}\nSource:{1:00}", _CurrentTime, _MissionInterval, _SourceInterval);
 
-            if (_EventInterval < 0.0f) {
-                _EventInterval = _Config.MissionInterval;
+            if (_MissionInterval < 0.0f) {
+                _MissionInterval = _Config.MissionInterval;
                 _Generator.GenerateMission();
+            }
+            if (_SourceInterval < 0.0f) {
+                _SourceInterval = _Config.SourceInterval;
+                _Generator.GenerateSource();
             }
 
             UpdateActiveMissions(Time.deltaTime);
@@ -80,11 +92,17 @@ namespace Shanghai {
             if (true) { //if we are in play state
                 _Model.CanDraw = true;
             }
-            //TODO: Get bounty from source (spy) here
-            Source source = new Source(1);
+
+            Source source = _Model.Grid.GetSourceFromCell(path[0].x);
             PlayableCell cell = _Model.Grid.GetCell(path[path.Count-1]);
             Mission mission = _Model.GetMissionFromCellKey(path[path.Count-1]);
-            _Model.ActiveMissions.Add(new ActiveMission(mission, path, source));
+
+            if (source.TargetID != mission.TargetID) {
+                _Model.Grid.ResetCells(path);
+                _Model.Grid.ResetSourceCell(path[0].x);
+            } else {
+                _Model.ActiveMissions.Add(new ActiveMission(mission, path, source));
+            }
         }
 
         private void OnMissionFailed() {

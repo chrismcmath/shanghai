@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Shanghai.Grid {
     public class Source {
-        public int Key = 0;
         public int Bounty = 0;
         public string TargetID = "";
 
         public Source() {}
-        public Source(int key) {
-            Key = key;
+        public Source(int bounty, string targetID) {
+            Bounty = bounty;
+            TargetID = targetID;
         }
     }
 }

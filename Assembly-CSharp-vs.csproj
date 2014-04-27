@@ -195,6 +195,7 @@
      <Compile Include="Assets\Libs\IntVect2.cs" />
      <Compile Include="Assets\Libs\Singleton.cs" />
      <Compile Include="Assets\Scripts\Controllers\CellController.cs" />
+     <Compile Include="Assets\Scripts\Controllers\MoneyController.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayGridController.cs" />
      <Compile Include="Assets\Scripts\Entities\ActiveMission.cs" />
      <Compile Include="Assets\Scripts\Entities\Client.cs" />

@@ -11,6 +11,9 @@ namespace Shanghai.Grid {
         public static readonly string EVENT_MISSION_FAILED = "EVENT_MISSION_FAILED";
 
         private List<List<PlayableCell>> _Cells = new List<List<PlayableCell>>();
+        public List<List<PlayableCell>> Cells {
+            get { return _Cells; }
+        }
 
         public Grid(int size) {
             for (int y = 0; y < size; y++) {
@@ -56,8 +59,8 @@ namespace Shanghai.Grid {
 
         public bool GetRandomCell(ref IntVect2 key) {
             List<PlayableCell> availableCells = new List<PlayableCell>();
-            foreach(List<PlayableCell> row in _Cells) {
-                foreach(PlayableCell cell in row) {
+            foreach (List<PlayableCell> row in _Cells) {
+                foreach (PlayableCell cell in row) {
                     if (cell.IsFree()) {
                         availableCells.Add(cell);
                     }
@@ -76,6 +79,15 @@ namespace Shanghai.Grid {
             PlayableCell cell = GetCell(cellKey);
             cell.Progress = progress;
             Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
+        }
+
+        public void ResetAllCells() {
+            foreach (List<PlayableCell> row in _Cells) {
+                foreach (PlayableCell cell in row) {
+                    cell.Reset();
+                }
+            }
+            Messenger<List<List<PlayableCell>>>.Broadcast(EVENT_GRID_UPDATED, _Cells, MessengerMode.DONT_REQUIRE_LISTENER);
         }
 
         public void ResetCells(List<IntVect2> path) {

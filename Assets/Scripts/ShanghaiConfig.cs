@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace Shanghai {
     public class ShanghaiConfig : MonoSingleton<ShanghaiConfig> {
         public float MissionInterval = 2.0f;
+        public float TelegramInterval = 2.0f;
         public float CellFillPerSecond = 0.5f;
 
         public int BountyMedium = 1000;

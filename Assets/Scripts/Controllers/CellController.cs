@@ -29,7 +29,10 @@ namespace Shanghai.Controllers {
             BountyLabel.text = cell.Bounty > 0 ? string.Format("{0}", cell.Bounty) : "";
 
             if (cell.TargetID != "") {
+                TargetSprite.alpha = 1;
                 TargetSprite.color = ShanghaiConfig.Instance.MinistryColours[cell.TargetID];
+            } else {
+                TargetSprite.alpha = 0;
             }
         }
 

@@ -66,6 +66,7 @@ namespace Shanghai {
                 if (actMiss.Progress(delta * _Config.CellFillPerSecond)) {
                     garbage.Add(actMiss);
                     //TODO: active mission finished logic here
+                    _Model.Money += actMiss.Mission.Bounty;
                 }
             }
 

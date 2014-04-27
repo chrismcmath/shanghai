@@ -8,6 +8,8 @@ using Shanghai.Path;
 
 namespace Shanghai {
     public class GameModel : MonoSingleton<GameModel> {
+        public static readonly string EVENT_MONEY_CHANGED = "EVENT_MONEY_CHANGED";
+
         public static readonly int GRID_SIZE = 6;
 
         private Grid.Grid _Grid;
@@ -41,18 +43,27 @@ namespace Shanghai {
             set { _CanDraw = value; }
         }
 
+        private int _Money = 0;
+        public int Money {
+            get { return _Money; }
+            set {
+                Debug.Log("set money to " + value);
+                if (value != _Money) {
+                    _Money = value;
+                    Messenger<int>.Broadcast(EVENT_MONEY_CHANGED, _Money);
+                }
+            }
+        }
+
         public void Awake() {
             Messenger<Mission>.AddListener(EventGenerator.EVENT_MISSION_CREATED, OnMissionCreated);
             Messenger<IntVect2, float>.AddListener(ActiveMission.EVENT_CELL_PROGRESSED, OnCellProgressed);
+            Init();
         }
 
         public void OnDestroy() {
             Messenger<Mission>.RemoveListener(EventGenerator.EVENT_MISSION_CREATED, OnMissionCreated);
             Messenger<IntVect2, float>.RemoveListener(ActiveMission.EVENT_CELL_PROGRESSED, OnCellProgressed);
-        }
-
-        public GameModel() {
-            Init();
         }
 
         public void Init() {
@@ -73,6 +84,13 @@ namespace Shanghai {
             AddEntityToCollection("trade", _Targets);
 
             _Grid = new Grid.Grid(GRID_SIZE);
+            _Grid.ResetAllCells();
+        }
+
+        //NOTE: NOT WORKING Timing issue here, need to update after Controllers have initialized
+        private IEnumerator UpdateGridController() {
+            yield return new WaitForEndOfFrame();
+            Messenger<List<List<PlayableCell>>>.Broadcast(Grid.EVENT_GRID_UPDATED, _Grid.Cells);
         }
 
         private void AddEntityToCollection<T>(string id, Dictionary<string, T> collection) where T : Entity, new() {

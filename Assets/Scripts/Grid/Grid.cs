@@ -98,6 +98,20 @@ namespace Shanghai.Grid {
             Messenger<List<List<PlayableCell>>>.Broadcast(EVENT_GRID_UPDATED, _Cells);
         }
 
+        public void IncreaseCellBounty(IntVect2 cellKey, int amount) {
+            PlayableCell cell = GetCell(cellKey);
+            cell.Bounty += amount;
+            Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
+        }
+
+        public void ResetCellsProgress(List<IntVect2> path) {
+            foreach (IntVect2 cellKey in path) {
+                PlayableCell cell = GetCell(cellKey);
+                cell.Progress = 0.0f;
+            }
+            Messenger<List<List<PlayableCell>>>.Broadcast(EVENT_GRID_UPDATED, _Cells);
+        }
+
         private bool CheckPrevCellPositions(IntVect2 key, List<IntVect2> path) {
             if (CellInPath(key, path)) {
                 Messenger.Broadcast(EVENT_MISSION_FAILED);

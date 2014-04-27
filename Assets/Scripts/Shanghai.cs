@@ -66,7 +66,7 @@ namespace Shanghai {
                 if (actMiss.Progress(delta * _Config.CellFillPerSecond)) {
                     garbage.Add(actMiss);
                     //TODO: active mission finished logic here
-                    _Model.Money += actMiss.Mission.Bounty;
+                    //_Model.Money += actMiss.Bounty;
                 }
             }
 
@@ -80,10 +80,11 @@ namespace Shanghai {
             if (true) { //if we are in play state
                 _Model.CanDraw = true;
             }
-            Source source = new Source("random_source");
+            //TODO: Get bounty from source (spy) here
+            Source source = new Source("random_source", 200, "health");
             PlayableCell cell = _Model.Grid.GetCell(path[path.Count-1]);
             Mission mission = _Model.GetMissionFromCellKey(path[path.Count-1]);
-            _Model.ActiveMissions.Add(new ActiveMission(mission, path));
+            _Model.ActiveMissions.Add(new ActiveMission(mission, path, source));
         }
 
         private void OnMissionFailed() {

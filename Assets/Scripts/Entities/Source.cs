@@ -4,8 +4,12 @@ using System.Collections.Generic;
 
 namespace Shanghai.Entities {
     public class Source : Entity {
+        public int Bounty = 0;
+        public string TargetID = "";
         public Source() {}
-        public Source(string id) : base (id) {
+        public Source(string id, int bounty, string targetID) : base (id) {
+            Bounty = bounty;
+            TargetID = targetID;
         }
     }
 }

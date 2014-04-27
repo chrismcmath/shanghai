@@ -14,6 +14,8 @@ namespace Shanghai {
         public float MissionWaitTimeMedium = 5.0f;
         public float MissionWaitTimeDeviance = 2.0f;
 
+        public int PacketSize = 100;
+
         public Color EducationColour = new Color(0.0f, 0.0f, 0.0f);
         public Color EnvironmentColour = new Color(0.0f, 0.0f, 0.0f);
         public Color HealthColour = new Color(0.0f, 0.0f, 0.0f);

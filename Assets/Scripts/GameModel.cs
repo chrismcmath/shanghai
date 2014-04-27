@@ -9,6 +9,8 @@ using Shanghai.Path;
 namespace Shanghai {
     public class GameModel : MonoSingleton<GameModel> {
         public static readonly string EVENT_MONEY_CHANGED = "EVENT_MONEY_CHANGED";
+        public static readonly string EVENT_MISSION_CHANGED = "EVENT_MISSION_CHANGED";
+        public static readonly string EVENT_SOURCE_CHANGED = "EVENT_SOURCE_CHANGED";
 
         public static readonly int GRID_SIZE = 6;
 
@@ -58,12 +60,14 @@ namespace Shanghai {
         public void Awake() {
             Messenger<Mission>.AddListener(EventGenerator.EVENT_MISSION_CREATED, OnMissionCreated);
             Messenger<IntVect2, float>.AddListener(ActiveMission.EVENT_CELL_PROGRESSED, OnCellProgressed);
+            Messenger<List<IntVect2>, Source>.AddListener(ActiveMission.EVENT_PACKAGE_DELIVERED, OnPackageDelivered);
             Init();
         }
 
         public void OnDestroy() {
             Messenger<Mission>.RemoveListener(EventGenerator.EVENT_MISSION_CREATED, OnMissionCreated);
             Messenger<IntVect2, float>.RemoveListener(ActiveMission.EVENT_CELL_PROGRESSED, OnCellProgressed);
+            Messenger<List<IntVect2>, Source>.RemoveListener(ActiveMission.EVENT_PACKAGE_DELIVERED, OnPackageDelivered);
         }
 
         public void Init() {
@@ -120,12 +124,17 @@ namespace Shanghai {
             PlayableCell cell = _Grid.GetCell(mission.CellKey);
             cell.ClientID = mission.ClientID;
             cell.TargetID = mission.TargetID;
-            cell.Bounty = mission.Bounty;
             Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
         } 
 
         private void OnCellProgressed(IntVect2 cellKey, float progress) {
             _Grid.CellProgressed(cellKey, progress);
+        }
+
+        private void OnPackageDelivered (List<IntVect2> path, Source source) {
+            Messenger<Source>.Broadcast(EVENT_SOURCE_CHANGED, source, MessengerMode.DONT_REQUIRE_LISTENER);
+            _Grid.IncreaseCellBounty(path[path.Count-1], ShanghaiConfig.Instance.PacketSize);
+            _Grid.ResetCellsProgress(path);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Shanghai.Controllers {
         }
 
         public void OnMoneyChanged(int money) {
-            MoneyLabel.text = string.Format("元{0}", money);
+            MoneyLabel.text = string.Format("{0}", money);
         }
     }
 }

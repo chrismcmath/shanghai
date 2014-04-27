@@ -25,10 +25,14 @@ namespace Shanghai {
             }
             string targetID = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value.ID;
             string clientID = _Model.Clients.ElementAt(Random.Range(0, _Model.Clients.Count)).Value.ID;
-            int bounty = _Config.BountyMedium + (Random.Range(0, _Config.BountyDeviance*2)) - _Config.BountyDeviance;
 
-            Mission mission = new Mission(cellKey, clientID, targetID, bounty);
+            Mission mission = new Mission(cellKey, clientID, targetID);
             Messenger<Mission>.Broadcast(EVENT_MISSION_CREATED, mission);
+            return true;
+        }
+
+        public bool GenerateSource() {
+            int bounty = _Config.BountyMedium + (Random.Range(0, _Config.BountyDeviance*2)) - _Config.BountyDeviance;
             return true;
         }
     }

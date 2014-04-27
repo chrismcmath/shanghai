@@ -7,7 +7,7 @@ using Shanghai.Grid;
 using Shanghai.Path;
 
 namespace Shanghai {
-    public class GameModel {
+    public class GameModel : MonoSingleton<GameModel> {
         public static readonly int GRID_SIZE = 6;
 
         private Grid.Grid _Grid;

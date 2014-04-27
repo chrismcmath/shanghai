@@ -45,6 +45,10 @@ namespace Shanghai.Grid {
             return _Cells[key.y][key.x];
         }
 
+        public SourceCell GetSourceCell(int key) {
+            return _SourceRow.GetCell(key);
+        }
+
         public Source GetSourceFromCell(int key) {
             return _SourceRow.GetCell(key).Source;
         }

@@ -136,7 +136,8 @@ namespace Shanghai {
         }
 
         private void OnPackageDelivered(List<IntVect2> path, Source source) {
-            Messenger<Source>.Broadcast(EVENT_SOURCE_CHANGED, source, MessengerMode.DONT_REQUIRE_LISTENER);
+            Messenger<SourceCell>.Broadcast(SourceCell.EVENT_SOURCE_CELL_UPDATED,
+                    _Grid.GetSourceCell(path[path.Count -1].x));
             _Grid.IncreaseCellBounty(path[path.Count-1], ShanghaiConfig.Instance.PacketSize);
             _Grid.ResetCellsProgress(path);
         }

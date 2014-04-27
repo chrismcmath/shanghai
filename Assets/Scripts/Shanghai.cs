@@ -30,7 +30,7 @@ namespace Shanghai {
         }
 
         private void OnCellUpdated(PlayableCell cell) {
-            GridController.UpdateCell(cell.Key, "horizontal", "", "");
+            //GridController.UpdateCell(cell.Key, "horizontal", "", "");
         }
 
         public void Update() {

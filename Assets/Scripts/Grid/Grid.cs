@@ -21,11 +21,14 @@ namespace Shanghai.Grid {
         }
 
         public bool ValidateCellInput(IntVect2 Key, List<IntVect2> path) {
-            PlayableCell cell = _Cells[Key.y][Key.x];
+            PlayableCell cell = GetCell(Key);
+            //Debug.Log("cell: " + Key.x + ", " + Key.y + " valid: " + cell.Valid + " path length: " + path.Count);
+            Debug.Log("cell: " + Key.x + ", " + Key.y);
             if (cell.Valid) {
                 cell.Selected = true;
                 UpdateCellPipeType(cell, path);
                 Messenger<PlayableCell>.Broadcast(EVENT_CELL_UPDATED, cell);
+                return true;
             }
             return false;
         }
@@ -35,16 +38,19 @@ namespace Shanghai.Grid {
         }
 
         private void UpdateCellPipeType(PlayableCell cell, List<IntVect2> path) {
-            IntVect2 prevKey = path[path.Count - 1];
+            if (path.Count < 2) return;
+            PlayableCell prevCell = GetCell(path[path.Count - 1]);
 
-            if (prevKey.x < cell.Key.x) {
-
-                //TODO: put in pipe types here
-                // let a helper function convert them to the string
-
-            } else if (prevKey.x > cell.Key.x) {
-            } else if (prevKey.y < cell.Key.y) {
-            } else if (prevKey.y > cell.Key.y) {
+            Debug.Log("@cell: " + cell.Key.x + ", " + cell.Key.y);
+            //Debug.Log("prev: " + prevCell.Key.x + "," + prevCell.Key.y + " curr: " + cell.Key.x + "," + cell.Key.y);
+            if (prevCell.Key.x < cell.Key.x) {
+                cell.Pipe = PlayableCell.PipeType.LEFT;
+            } else if (prevCell.Key.x > cell.Key.x) {
+                cell.Pipe = PlayableCell.PipeType.RIGHT;
+            } else if (prevCell.Key.y < cell.Key.y) {
+                cell.Pipe = PlayableCell.PipeType.TOP;
+            } else if (prevCell.Key.y > cell.Key.y) {
+                cell.Pipe = PlayableCell.PipeType.BOTTOM;
             }
         }
     }

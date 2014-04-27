@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Shanghai.Entities {
-    public class Mission : Entity {
+namespace Shanghai.Grid {
+    public class Mission {
         public IntVect2 CellKey;
         public string ClientID;
         public string TargetID;

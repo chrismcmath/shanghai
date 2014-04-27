@@ -81,7 +81,7 @@ namespace Shanghai {
                 _Model.CanDraw = true;
             }
             //TODO: Get bounty from source (spy) here
-            Source source = new Source("random_source", 200, "health");
+            Source source = new Source(1);
             PlayableCell cell = _Model.Grid.GetCell(path[path.Count-1]);
             Mission mission = _Model.GetMissionFromCellKey(path[path.Count-1]);
             _Model.ActiveMissions.Add(new ActiveMission(mission, path, source));

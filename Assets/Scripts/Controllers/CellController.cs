@@ -8,13 +8,14 @@ namespace Shanghai.Controllers {
         public static readonly string EVENT_CELL_DRAG_END = "EVENT_CELL_DRAG_END";
 
         public static readonly string PIPE_PREFIX = "default";
-        public static readonly string CLIENT_PREFIX = "mission";
+        public static readonly string CLIENT_PREFIX = "flag";
         public static readonly string TARGET_PREFIX = "target";
         public static readonly string OBSTACLE_PREFIX = "obstacle";
 
         public IntVect2 Key;
         private GameObject _CurrentObject = null;
         private bool _IsDragging = false;
+
         public UISprite PipeSprite;
         public UISprite ClientSprite;
         public UISprite TargetSprite;

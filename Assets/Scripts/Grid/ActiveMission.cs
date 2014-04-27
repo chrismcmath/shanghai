@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Shanghai.Entities {
-    public class ActiveMission : Entity {
+namespace Shanghai.Grid {
+    public class ActiveMission {
         public static readonly string EVENT_CELL_PROGRESSED = "EVENT_CELL_PROGRESSED";
         public static readonly string EVENT_PACKAGE_DELIVERED = "EVENT_PACKAGE_DELIVERED";
 

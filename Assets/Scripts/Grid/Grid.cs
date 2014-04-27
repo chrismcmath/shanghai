@@ -15,6 +15,8 @@ namespace Shanghai.Grid {
             get { return _Cells; }
         }
 
+        private SourceRow _SourceRow;
+
         public Grid(int size) {
             for (int y = 0; y < size; y++) {
                 List<PlayableCell> row = new List<PlayableCell>();
@@ -23,6 +25,8 @@ namespace Shanghai.Grid {
                 }
                 _Cells.Add(row);
             }
+
+            _SourceRow = new SourceRow(size);
         }
 
         public bool ValidateCellInput(IntVect2 key, List<IntVect2> path) {

@@ -19,7 +19,6 @@ namespace Shanghai.Controllers {
         }
 
         private void OnSourceCellUpdated(SourceCell sourceCell) {
-            Debug.Log("OnSourceCellUpdated");
             Transform sourceTrans = transform.Find(string.Format("{0}", sourceCell.Key));
             if (sourceTrans != null) {
                 SourceController sourceCtr = sourceTrans.GetComponent<SourceController>();
@@ -41,6 +40,8 @@ namespace Shanghai.Controllers {
                 Debug.Log("Could not load source from path " + SOURCE_PATH);
             }
 
+            ShanghaiUtils.RemoveAllChildren(transform);
+
             for (int x = 0; x < size; x++) {
                 GameObject source = GameObject.Instantiate(sourcePrefab) as GameObject;
 
@@ -52,6 +53,7 @@ namespace Shanghai.Controllers {
                 source.transform.localPosition = Vector3.zero;
                 source.transform.localScale = Vector3.one;
             }
+            _Table.repositionNow = true;
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace Shanghai.Entities { 
     public class Entity {
-        public string ID;
+        public string Key;
 
         public Entity() {}
-        public Entity(string id) {
-            string ID;
+        public Entity(string key) {
+            string Key;
         }
     }
 }

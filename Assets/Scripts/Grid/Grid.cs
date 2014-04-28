@@ -96,13 +96,15 @@ namespace Shanghai.Grid {
             Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
         }
 
-        public void ResetAllCells() {
+        public void ResetAllCells(bool silent) {
             foreach (List<PlayableCell> row in _Cells) {
                 foreach (PlayableCell cell in row) {
                     cell.Reset();
                 }
             }
+            if (!silent) {
             Messenger<List<List<PlayableCell>>>.Broadcast(EVENT_GRID_UPDATED, _Cells, MessengerMode.DONT_REQUIRE_LISTENER);
+            }
         }
 
         public void ResetCells(List<IntVect2> path) {

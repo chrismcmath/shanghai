@@ -13,6 +13,9 @@ namespace Shanghai {
         public static readonly string EVENT_MISSION_CHANGED = "EVENT_MISSION_CHANGED";
         public static readonly string EVENT_SOURCE_CHANGED = "EVENT_SOURCE_CHANGED";
 
+        public static readonly string EVENT_CLIENT_UPDATED = "EVENT_CLIENT_UPDATED";
+        public static readonly string EVENT_TARGET_UPDATED = "EVENT_TARGET_UPDATED";
+
         public static readonly int GRID_SIZE = 6;
 
         private Grid.Grid _Grid;
@@ -50,7 +53,6 @@ namespace Shanghai {
         public int Money {
             get { return _Money; }
             set {
-                Debug.Log("set money to " + value);
                 if (value != _Money) {
                     _Money = value;
                     Messenger<int>.Broadcast(EVENT_MONEY_CHANGED, _Money);
@@ -63,7 +65,6 @@ namespace Shanghai {
             Messenger<IntVect2, float>.AddListener(ActiveMission.EVENT_CELL_PROGRESSED, OnCellProgressed);
             Messenger<List<IntVect2>, Source>.AddListener(ActiveMission.EVENT_PACKAGE_DELIVERED, OnPackageDelivered);
             Messenger<int, Source>.AddListener(TelegramController.EVENT_TELEGRAM_DROPPED, OnTelegramDropped);
-            Init();
         }
 
         public void OnDestroy() {
@@ -73,7 +74,7 @@ namespace Shanghai {
             Messenger<int, Source>.RemoveListener(TelegramController.EVENT_TELEGRAM_DROPPED, OnTelegramDropped);
         }
 
-        public void Init() {
+        public void Reset() {
             /* Add clients (embassies) */
             _Clients = new Dictionary<string, Client>();
             AddEntityToCollection("uk", _Clients);
@@ -91,7 +92,12 @@ namespace Shanghai {
             AddEntityToCollection("trade", _Targets);
 
             _Grid = new Grid.Grid(GRID_SIZE);
-            _Grid.ResetAllCells();
+            _Grid.ResetAllCells(true);
+
+            _Missions = new List<Mission>();
+            _ActiveMissions = new List<ActiveMission>();
+            _Money = 0;
+            _CanDraw = true;
         }
 
         //NOTE: NOT WORKING Timing issue here, need to update after Controllers have initialized
@@ -100,10 +106,10 @@ namespace Shanghai {
             Messenger<List<List<PlayableCell>>>.Broadcast(Grid.EVENT_GRID_UPDATED, _Grid.Cells);
         }
 
-        private void AddEntityToCollection<T>(string id, Dictionary<string, T> collection) where T : Entity, new() {
+        private void AddEntityToCollection<T>(string key, Dictionary<string, T> collection) where T : Entity, new() {
             T entity = new T();
-            entity.ID = id;
-            collection.Add(id, entity);
+            entity.Key = key;
+            collection.Add(key, entity);
         }
 
         public Mission GetMissionFromCellKey(IntVect2 key) {

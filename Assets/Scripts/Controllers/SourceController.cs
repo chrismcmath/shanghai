@@ -16,6 +16,7 @@ namespace Shanghai.Controllers {
         public Source Source = null;
 
         public void UpdateSource(SourceCell sourceCell) {
+            //Debug.Log("update source");
             Key = sourceCell.Key;
             Source = sourceCell.Source;
             if (Source != null) {

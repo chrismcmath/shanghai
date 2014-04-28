@@ -51,6 +51,8 @@ namespace Shanghai.Controllers {
                 Debug.Log("Could not load cell from path " + CELL_PATH);
             }
 
+            ShanghaiUtils.RemoveAllChildren(transform);
+
             for (int y = 0; y < size; y++) {
                 for (int x = 0; x < size; x++) {
                     GameObject cell = GameObject.Instantiate(cellPrefab) as GameObject;
@@ -64,6 +66,7 @@ namespace Shanghai.Controllers {
                     cell.transform.localScale = Vector3.one;
                 }
             }
+            _Table.repositionNow = true;
         }
     }
 }

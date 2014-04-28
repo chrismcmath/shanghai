@@ -16,6 +16,19 @@ namespace Shanghai {
 
         public int PacketSize = 100;
 
+        /* Ministries */
+        public float HealthDropOnMissionComplete = 20f;
+        public float HealthIncPerSecond = 1f;
+        public float MaxHealth = 100f;
+        public float MinHealth = 10f;
+
+        /* Embassies */
+        public float ReputationIncOnMissionComplete = 20f;
+        public float ReputationDecOnMissionFailed = 20f;
+        public float ReputationDecPerSecond = 1f;
+        public float MaxReputation = 100f;
+        public float MinReputation = 10f;
+
         public Color EducationColour = new Color(0.0f, 0.0f, 0.0f);
         public Color EnvironmentColour = new Color(0.0f, 0.0f, 0.0f);
         public Color HealthColour = new Color(0.0f, 0.0f, 0.0f);

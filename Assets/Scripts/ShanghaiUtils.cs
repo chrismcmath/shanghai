@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 using Shanghai.Grid;
 
@@ -34,6 +35,12 @@ namespace Shanghai {
                     return "none found";
                     break;
             }
+        }
+
+        public static void RemoveAllChildren(Transform transform) {
+            List<GameObject> children = new List<GameObject>();
+            foreach (Transform child in transform) children.Add(child.gameObject);
+            children.ForEach(child => Object.Destroy(child));
         }
     }
 }

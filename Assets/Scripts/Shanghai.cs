@@ -8,10 +8,20 @@ using Shanghai.Controllers;
 
 namespace Shanghai {
     public class Shanghai : MonoBehaviour {
+        public static readonly string EVENT_GAME_START = "EVENT_GAME_START";
+
+        public enum GameState {START=0, PLAY, END_GAME};
+
         public PlayGridController GridController;
         public SourceRowController SourceRowController;
+        public TargetsController TargetsController;
+        public ClientsController ClientsController;
+        public TitleController TitleController;
+        public GameOverController GameOverController;
+
         public UILabel DebugLabel;
 
+        private GameState _State = GameState.START;
         private float _CurrentTime;
         private float _MissionInterval = 0.0f;
         private float _SourceInterval = 0.0f;
@@ -24,6 +34,15 @@ namespace Shanghai {
             _Config = ShanghaiConfig.Instance;
             _Generator = new EventGenerator();
 
+
+            // Update GUI
+
+            Messenger<List<IntVect2>>.AddListener(Grid.Grid.EVENT_SET_PATH, OnSetPath);
+            Messenger.AddListener(Grid.Grid.EVENT_MISSION_FAILED, OnMissionFailed);
+            Messenger.AddListener(EVENT_GAME_START, OnGameStart);
+        }
+
+        public void CreateAssets() {
             if (GridController != null) {
                 GridController.CreateTable(GameModel.GRID_SIZE);
             } else {
@@ -34,25 +53,46 @@ namespace Shanghai {
             } else {
                 Debug.Log("SourceRowController not set");
             }
-
-            // Update GUI
-
-            Messenger<PlayableCell>.AddListener(PlayableCell.EVENT_CELL_UPDATED, OnCellUpdated);
-            Messenger<List<IntVect2>>.AddListener(Grid.Grid.EVENT_SET_PATH, OnSetPath);
-            Messenger.AddListener(Grid.Grid.EVENT_MISSION_FAILED, OnMissionFailed);
+            if (TargetsController != null) {
+                TargetsController.CreateTable(_Model.Targets);
+            } else {
+                Debug.Log("TargetsControlle rnot set");
+            }
+            if (ClientsController != null) {
+                ClientsController.CreateTable(_Model.Clients);
+            } else {
+                Debug.Log("ClientsController not set");
+            }
         }
 
         public void OnDestroy() {
-            Messenger<PlayableCell>.RemoveListener(PlayableCell.EVENT_CELL_UPDATED, OnCellUpdated);
             Messenger<List<IntVect2>>.RemoveListener(Grid.Grid.EVENT_SET_PATH, OnSetPath);
             Messenger.RemoveListener(Grid.Grid.EVENT_MISSION_FAILED, OnMissionFailed);
-        }
-
-        private void OnCellUpdated(PlayableCell cell) {
-            //GridController.UpdateCell(cell.Key, "horizontal", "", "");
+            Messenger.RemoveListener(EVENT_GAME_START, OnGameStart);
         }
 
         public void Update() {
+            switch (_State) {
+                case GameState.START:
+                    break;
+                case GameState.PLAY:
+                    GameLoop();
+                    break;
+                case GameState.END_GAME:
+                    break;
+            }   
+        }
+
+        public void OnGameStart() {
+            TitleController.gameObject.SetActive(false);
+            GameOverController.gameObject.SetActive(false);
+            _Model.Reset();
+            CreateAssets();
+            _State = GameState.PLAY;
+        }
+            
+
+        private void GameLoop() {
             _CurrentTime += Time.deltaTime;
             _MissionInterval -= Time.deltaTime;
             _SourceInterval -= Time.deltaTime;
@@ -68,8 +108,36 @@ namespace Shanghai {
             }
 
             UpdateActiveMissions(Time.deltaTime);
+            ReplinishTargets(Time.deltaTime);
+            DrainClients(Time.deltaTime);
 
-            //Process new events
+            CheckForEndGame();
+        }
+
+        public void CheckForEndGame() {
+            foreach (KeyValuePair<string, Client> client in _Model.Clients) {
+                if (client.Value.Reputation <= _Config.MinReputation) {
+                    EndGame();
+                }
+            }
+        }
+
+        private void EndGame() {
+            GameOverController.gameObject.SetActive(true);
+            _Model.CanDraw = false;
+            _State = GameState.END_GAME;
+        }
+
+        public void ReplinishTargets(float delta) {
+            foreach (KeyValuePair<string, Target> target in _Model.Targets) {
+                target.Value.ReplenishHealth(delta);
+            }
+        }
+
+        public void DrainClients(float delta) {
+            foreach (KeyValuePair<string, Client> client in _Model.Clients) {
+                client.Value.DrainReputation(delta);
+            }
         }
 
         public void UpdateActiveMissions(float delta) {
@@ -78,7 +146,11 @@ namespace Shanghai {
                 if (actMiss.Progress(delta * _Config.CellFillPerSecond)) {
                     garbage.Add(actMiss);
                     //TODO: active mission finished logic here
-                    //_Model.Money += actMiss.Bounty;
+
+                    Target target = _Model.Targets[actMiss.Mission.TargetID];
+                    target.DockHealth();
+                    Client client = _Model.Clients[actMiss.Mission.ClientID];
+                    client.IncReputation();
                 }
             }
 
@@ -89,7 +161,7 @@ namespace Shanghai {
         }
 
         private void OnSetPath(List<IntVect2> path) {
-            if (true) { //if we are in play state
+            if (_State == GameState.PLAY) {
                 _Model.CanDraw = true;
             }
 
@@ -100,6 +172,8 @@ namespace Shanghai {
             if (source.TargetID != mission.TargetID) {
                 _Model.Grid.ResetCells(path);
                 _Model.Grid.ResetSourceCell(path[0].x);
+                Client client = _Model.Clients[mission.ClientID];
+                client.DockReputation();
             } else {
                 _Model.ActiveMissions.Add(new ActiveMission(mission, path, source));
             }

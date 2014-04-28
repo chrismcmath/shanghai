@@ -4,10 +4,36 @@ using System.Collections.Generic;
 
 namespace Shanghai.Entities {
     public class Target : Entity {
-        private int _Health = 100;
+        public static readonly string EVENT_TARGET_UPDATED = "EVENT_TARGET_UPDATED";
+
+        public float Health = 100f;
+        private ShanghaiConfig _Config;
 
         public Target() {}
-        public Target(string id) : base (id) {
+        public Target(string key) : base (key) {
+            _Config = ShanghaiConfig.Instance;
+        }
+
+        public void DockHealth() {
+            if (_Config == null) {
+                _Config = ShanghaiConfig.Instance;
+            }
+            Health -= _Config.HealthDropOnMissionComplete;
+            ValidateHealth();
+        }
+
+        public void ReplenishHealth(float delta) {
+            if (_Config == null) {
+                _Config = ShanghaiConfig.Instance;
+            }
+            Health += _Config.HealthIncPerSecond * delta;
+            ValidateHealth();
+        }
+
+        public void ValidateHealth() {
+            Health = (Health < _Config.MinHealth) ? _Config.MinHealth : Health;
+            Health = (Health > _Config.MaxHealth) ? _Config.MaxHealth : Health;
+            Messenger<Target>.Broadcast(EVENT_TARGET_UPDATED, this);
         }
     }
 }

@@ -24,8 +24,8 @@ namespace Shanghai {
             if (!_Model.Grid.GetRandomCell(ref cellKey)) {
                 return false;
             }
-            string targetID = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value.ID;
-            string clientID = _Model.Clients.ElementAt(Random.Range(0, _Model.Clients.Count)).Value.ID;
+            string targetID = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value.Key;
+            string clientID = _Model.Clients.ElementAt(Random.Range(0, _Model.Clients.Count)).Value.Key;
 
             Mission mission = new Mission(cellKey, clientID, targetID);
             Messenger<Mission>.Broadcast(EVENT_MISSION_CREATED, mission);
@@ -34,9 +34,10 @@ namespace Shanghai {
 
         public bool GenerateSource() {
             int bounty = _Config.BountyMedium + (Random.Range(0, _Config.BountyDeviance*2)) - _Config.BountyDeviance;
-            string targetID = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value.ID;
+            Target target = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value;
+            bounty *= (int) Mathf.Round(target.Health / _Config.MaxHealth);
 
-            Source source = new Source(bounty, targetID);
+            Source source = new Source(bounty, target.Key);
             Messenger<Source>.Broadcast(EVENT_SOURCE_CREATED, source);
             return true;
         }

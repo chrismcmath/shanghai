@@ -96,7 +96,7 @@ namespace Shanghai {
 
             _Missions = new List<Mission>();
             _ActiveMissions = new List<ActiveMission>();
-            _Money = 0;
+            Money = 0;
             _CanDraw = true;
         }
 
@@ -143,7 +143,7 @@ namespace Shanghai {
 
         private void OnPackageDelivered(List<IntVect2> path, Source source) {
             Messenger<SourceCell>.Broadcast(SourceCell.EVENT_SOURCE_CELL_UPDATED,
-                    _Grid.GetSourceCell(path[path.Count -1].x));
+                    _Grid.GetSourceCell(path[0].x));
             _Grid.IncreaseCellBounty(path[path.Count-1], ShanghaiConfig.Instance.PacketSize);
             _Grid.ResetCellsProgress(path);
         }

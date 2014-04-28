@@ -26,11 +26,11 @@ namespace Shanghai.Controllers {
             UpdateSprite(ClientSprite, CLIENT_PREFIX, cell.ClientID);
             ProgressSprite.fillAmount = cell.Progress;
 
-            BountyLabel.text = cell.Bounty > 0 ? string.Format("{0}元", cell.Bounty) : "";
+            BountyLabel.text = cell.Bounty > 0 ? string.Format("{0}", cell.Bounty) : "";
 
             if (cell.TargetID != "") {
-                TargetSprite.alpha = 1;
                 TargetSprite.color = ShanghaiConfig.Instance.MinistryColours[cell.TargetID];
+                TargetSprite.alpha = ShanghaiConfig.Instance.MissionTargetAlpha;
             } else {
                 TargetSprite.alpha = 0;
             }
@@ -40,7 +40,7 @@ namespace Shanghai.Controllers {
             if (state == "") { 
                 sprite.alpha = 0;
             } else {
-                sprite.alpha = 1;
+                sprite.alpha = ShanghaiConfig.Instance.MissionFlagAlpha;
                 sprite.spriteName = string.Format("{0}_{1}", prefix, state);
             }
         }

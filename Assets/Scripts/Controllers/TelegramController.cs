@@ -13,6 +13,10 @@ namespace Shanghai.Controllers {
         public UISprite BackgroundSprite;
 
         private bool _IsDragging = false;
+        public bool IsDragging {
+            get { return _IsDragging; }
+        }
+
         private SourceController _OverSource = null;
 
         private Source _Source;
@@ -20,7 +24,7 @@ namespace Shanghai.Controllers {
             set { 
                 _Source = value;
                 TargetLabel.text = string.Format("{0}", ShanghaiUtils.BeautifyString(_Source.TargetID));
-                BountyLabel.text = string.Format("{0}元", _Source.Bounty);
+                BountyLabel.text = string.Format("{0}", _Source.Bounty);
                 BackgroundSprite.color = _Config.MinistryColours[_Source.TargetID];
             }
         }

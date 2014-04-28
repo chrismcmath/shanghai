@@ -26,18 +26,23 @@ namespace Shanghai {
             }
             string targetID = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value.Key;
             string clientID = _Model.Clients.ElementAt(Random.Range(0, _Model.Clients.Count)).Value.Key;
+            float TTL =_Config.MissionWaitTimeMedium + (Random.Range(0, _Config.MissionWaitTimeDeviance*2)) - _Config.MissionWaitTimeDeviance; 
 
-            Mission mission = new Mission(cellKey, clientID, targetID);
+            Mission mission = new Mission(cellKey, clientID, targetID, TTL);
             Messenger<Mission>.Broadcast(EVENT_MISSION_CREATED, mission);
             return true;
         }
 
         public bool GenerateSource() {
-            int bounty = _Config.BountyMedium + (Random.Range(0, _Config.BountyDeviance*2)) - _Config.BountyDeviance;
+            float bountyDeviance = Random.Range(0f,1f)*Random.Range(0f,1f) * (float) (_Config.BountyMax - _Config.BountyMin);
+            float bounty = bountyDeviance + _Config.BountyMin;
+        
             Target target = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value;
-            bounty *= (int) Mathf.Round(target.Health / _Config.MaxHealth);
+            Debug.Log("bounty was " + bounty);
+            bounty *= target.Health / _Config.MaxHealth;
+            Debug.Log("bounty is " + bounty);
 
-            Source source = new Source(bounty, target.Key);
+            Source source = new Source((int) bounty, target.Key);
             Messenger<Source>.Broadcast(EVENT_SOURCE_CREATED, source);
             return true;
         }

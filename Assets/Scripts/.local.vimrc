@@ -1,1 +1,1 @@
-:cd ~/Documents/games/LD29/Assets/Scripts
+:cd ~/Documents/games/shanghai/Assets/Scripts

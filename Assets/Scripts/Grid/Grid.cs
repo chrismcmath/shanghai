@@ -63,7 +63,7 @@ namespace Shanghai.Grid {
             }
             PlayableCell finalCell = GetCell(path[path.Count - 1]);
             if (finalCell.TargetID == "") {
-                ResetCells(path);
+                ResetCellsInPath(path);
                 Messenger.Broadcast(EVENT_MISSION_FAILED);
                 return;
             } else {
@@ -107,7 +107,13 @@ namespace Shanghai.Grid {
             }
         }
 
-        public void ResetCells(List<IntVect2> path) {
+        public void ResetCell(IntVect2 cellKey) {
+            PlayableCell cell = GetCell(cellKey);
+            cell.Reset();
+            Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
+        }
+
+        public void ResetCellsInPath(List<IntVect2> path) {
             foreach (IntVect2 cellKey in path) {
                 PlayableCell cell = GetCell(cellKey);
                 cell.Reset();

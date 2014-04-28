@@ -14,11 +14,12 @@ namespace Shanghai.Entities {
             _Config = ShanghaiConfig.Instance;
         }
 
-        public void DockHealth() {
+        public void DockHealth(int delta) {
             if (_Config == null) {
                 _Config = ShanghaiConfig.Instance;
             }
-            Health -= _Config.HealthDropOnMissionComplete;
+
+            Health -= delta;
             ValidateHealth();
         }
 

@@ -29,7 +29,9 @@ namespace Shanghai.Controllers {
         }
 
         public void OnSourceCreated(Source source) {
-            Destroy(_CurrentTelegram);
+            if (_CurrentTelegram != null && !_CurrentTelegram.GetComponent<TelegramController>().IsDragging) {
+                Destroy(_CurrentTelegram);
+            }
             GameObject telegramGO = GameObject.Instantiate(_TelegramPrefab) as GameObject;
             _CurrentTelegram = telegramGO;
             TelegramController telegram = telegramGO.GetComponent<TelegramController>();

@@ -10,6 +10,7 @@ namespace Shanghai.Grid {
         public Mission Mission;
         public List<IntVect2> Path;
         public Source Source;
+        public int Bounty;
 
         private float CurrentCellProgress = 0.0f;
         private int CurrentCellID = 0;
@@ -19,7 +20,10 @@ namespace Shanghai.Grid {
             Mission = mission;
             Path = path;
             Source = source;
+            Bounty = source.Bounty;
             _Config = ShanghaiConfig.Instance;
+
+            Mission.IsActive = true;
         }
 
         public bool Progress(float progress) {

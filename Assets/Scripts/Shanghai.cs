@@ -110,6 +110,7 @@ namespace Shanghai {
             UpdateActiveMissions(Time.deltaTime);
             ReplinishTargets(Time.deltaTime);
             DrainClients(Time.deltaTime);
+            TickMissions(Time.deltaTime);
 
             CheckForEndGame();
         }
@@ -140,6 +141,17 @@ namespace Shanghai {
             }
         }
 
+        public void TickMissions(float delta) {
+            foreach (Mission mission in _Model.Missions) {
+                if (!mission.IsActive && mission.IsTTD(delta)) {
+                    PlayableCell cell = _Model.Grid.GetCell(mission.CellKey);
+                    cell.TargetID = "";
+                    cell.ClientID = "";
+                    Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
+                }
+            }
+        }
+
         public void UpdateActiveMissions(float delta) {
             List<ActiveMission> garbage = new List<ActiveMission>();
             foreach (ActiveMission actMiss in _Model.ActiveMissions) {
@@ -148,7 +160,7 @@ namespace Shanghai {
                     //TODO: active mission finished logic here
 
                     Target target = _Model.Targets[actMiss.Mission.TargetID];
-                    target.DockHealth();
+                    target.DockHealth(actMiss.Bounty);
                     Client client = _Model.Clients[actMiss.Mission.ClientID];
                     client.IncReputation();
                 }
@@ -170,7 +182,7 @@ namespace Shanghai {
             Mission mission = _Model.GetMissionFromCellKey(path[path.Count-1]);
 
             if (source.TargetID != mission.TargetID) {
-                _Model.Grid.ResetCells(path);
+                _Model.Grid.ResetCellsInPath(path);
                 _Model.Grid.ResetSourceCell(path[0].x);
                 Client client = _Model.Clients[mission.ClientID];
                 client.DockReputation();

@@ -21,7 +21,7 @@ namespace Shanghai.Controllers {
             Source = sourceCell.Source;
             if (Source != null) {
                 TargetSprite.color = ShanghaiConfig.Instance.MinistryColours[Source.TargetID];
-                BountyLabel.text = string.Format("{0}元", Source.Bounty);
+                BountyLabel.text = string.Format("{0}", Source.Bounty);
             } else {
                 TargetSprite.color = Color.white;
                 BountyLabel.text = "";
@@ -29,7 +29,9 @@ namespace Shanghai.Controllers {
         }
 
         public void OnDragOver(GameObject draggedGO) {
-            Messenger<SourceController>.Broadcast(EVENT_TELEGRAM_OVER, this);
+            if (Source == null) {
+                Messenger<SourceController>.Broadcast(EVENT_TELEGRAM_OVER, this);
+            }
         }
 
         public void OnDragOut(GameObject draggedGO) {

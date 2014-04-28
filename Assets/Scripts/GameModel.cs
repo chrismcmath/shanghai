@@ -123,7 +123,7 @@ namespace Shanghai {
         }
 
         public void RemoveActiveMission(ActiveMission actMiss) {
-            _Grid.ResetCells(actMiss.Path);
+            _Grid.ResetCellsInPath(actMiss.Path);
             _Grid.ResetSourceCell(actMiss.Path[0].x);
             _Missions.Remove(actMiss.Mission);
             _ActiveMissions.Remove(actMiss);

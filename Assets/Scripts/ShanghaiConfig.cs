@@ -8,8 +8,8 @@ namespace Shanghai {
         public float SourceInterval = 3.0f; //the telegrams that come in
         public float CellFillPerSecond = 0.5f; //the amount a cell is filled per second (1 is full)
 
-        public int BountyMedium = 1000;
-        public int BountyDeviance = 1000;
+        public int BountyMin = 50;
+        public int BountyMax = 2000;
 
         public float MissionWaitTimeMedium = 5.0f;
         public float MissionWaitTimeDeviance = 2.0f;
@@ -17,7 +17,6 @@ namespace Shanghai {
         public int PacketSize = 100;
 
         /* Ministries */
-        public float HealthDropOnMissionComplete = 20f;
         public float HealthIncPerSecond = 1f;
         public float MaxHealth = 100f;
         public float MinHealth = 10f;
@@ -28,6 +27,9 @@ namespace Shanghai {
         public float ReputationDecPerSecond = 1f;
         public float MaxReputation = 100f;
         public float MinReputation = 10f;
+
+        public float MissionFlagAlpha = 0.7f;
+        public float MissionTargetAlpha = 0.5f;
 
         public Color EducationColour = new Color(0.0f, 0.0f, 0.0f);
         public Color EnvironmentColour = new Color(0.0f, 0.0f, 0.0f);

@@ -17,7 +17,7 @@ namespace Shanghai.Entities {
             if (_Config == null) {
                 _Config = ShanghaiConfig.Instance;
             }
-            Reputation += _Config.ReputationDecOnMissionFailed;
+            Reputation -= _Config.ReputationDecOnMissionFailed;
             ValidateReputation();
         }
 

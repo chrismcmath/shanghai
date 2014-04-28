@@ -125,6 +125,7 @@ namespace Shanghai {
 
         private void EndGame() {
             GameOverController.gameObject.SetActive(true);
+            GameOverController.Populate(_Model.Targets, _Model.Money);
             _Model.CanDraw = false;
             _State = GameState.END_GAME;
         }

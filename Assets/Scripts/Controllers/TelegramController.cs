@@ -7,6 +7,7 @@ namespace Shanghai.Controllers {
     public class TelegramController : MonoBehaviour {
         public static readonly string EVENT_TELEGRAM_END_DRAG = "EVENT_TELEGRAM_END_DRAG";
         public static readonly string EVENT_TELEGRAM_DROPPED = "EVENT_TELEGRAM_DROPPED";
+        public const float DESTROY_WAIT_TIME = 1.0f;
 
         public UILabel TargetLabel;
         public UILabel BountyLabel;
@@ -33,7 +34,18 @@ namespace Shanghai.Controllers {
 
         public void Awake() {
             _Config = ShanghaiConfig.Instance;
+            animation.Play("tele_in");
             Messenger<SourceController>.AddListener(SourceController.EVENT_TELEGRAM_OVER, OnTelegramOver);
+        }
+
+        public void DestroyTelegram() {
+            animation.Play("tele_out");
+            StartCoroutine(DestroyGO());
+        }
+
+        private IEnumerator DestroyGO() {
+            yield return new WaitForSeconds(DESTROY_WAIT_TIME);
+            Destroy(gameObject);
         }
 
         public void Destroy() {
@@ -47,9 +59,11 @@ namespace Shanghai.Controllers {
         public void OnPress(bool press) {
             if (_IsDragging && !press) {
                 if (_OverSource != null) {
+                    Destroy(gameObject);
                     Messenger<int, Source>.Broadcast(EVENT_TELEGRAM_DROPPED, _OverSource.Key, _Source);
+                } else {
+                    DestroyTelegram();
                 }
-                Destroy(gameObject);
             }
         }
 

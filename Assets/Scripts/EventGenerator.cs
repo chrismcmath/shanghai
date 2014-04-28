@@ -38,9 +38,7 @@ namespace Shanghai {
             float bounty = bountyDeviance + _Config.BountyMin;
         
             Target target = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value;
-            Debug.Log("bounty was " + bounty);
             bounty *= target.Health / _Config.MaxHealth;
-            Debug.Log("bounty is " + bounty);
 
             Source source = new Source((int) bounty, target.Key);
             Messenger<Source>.Broadcast(EVENT_SOURCE_CREATED, source);

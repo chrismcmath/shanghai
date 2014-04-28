@@ -13,6 +13,8 @@ namespace Shanghai.Controllers {
         private GameObject _TelegramPrefab;
         private GameObject _CurrentTelegram;
 
+        public UIPlaySound TickerSound;
+
         public void Awake() {
             _Config = ShanghaiConfig.Instance;
 
@@ -30,7 +32,7 @@ namespace Shanghai.Controllers {
 
         public void OnSourceCreated(Source source) {
             if (_CurrentTelegram != null && !_CurrentTelegram.GetComponent<TelegramController>().IsDragging) {
-                Destroy(_CurrentTelegram);
+                _CurrentTelegram.GetComponent<TelegramController>().DestroyTelegram();
             }
             GameObject telegramGO = GameObject.Instantiate(_TelegramPrefab) as GameObject;
             _CurrentTelegram = telegramGO;
@@ -39,6 +41,8 @@ namespace Shanghai.Controllers {
             telegram.transform.parent = transform;
             telegram.transform.localPosition = Vector2.zero;
             telegram.transform.localScale = Vector2.one;
+
+            TickerSound.Play();
         }
     }
 }

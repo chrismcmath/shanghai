@@ -97,6 +97,8 @@ namespace Shanghai.Controllers {
         }
 
         public void OnDragOver(GameObject go) {
+            if (go.GetComponent<TelegramController>() != null) return;
+
             Messenger<IntVect2>.Broadcast(EVENT_CELL_DRAGGED, Key);
         }
 

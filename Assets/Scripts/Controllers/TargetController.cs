@@ -11,7 +11,6 @@ namespace Shanghai.Controllers {
             get { return _Key; }
             set {
                 _Key = value;
-                Debug.Log("new key: " + _Key);
                 BackgroundSprite.color = ShanghaiConfig.Instance.MinistryColours[_Key];
             }
         }

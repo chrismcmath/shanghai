@@ -14,7 +14,6 @@ namespace Shanghai.Controllers {
             get { return _Key; }
             set {
                 _Key = value;
-                Debug.Log("new key: " + _Key);
                 BackgroundSprite.spriteName = string.Format("{0}_{1}", CLIENT_PREFIX, _Key);
                 FlagSprite.spriteName = string.Format("{0}_{1}", FLAG_PREFIX, _Key);
             }

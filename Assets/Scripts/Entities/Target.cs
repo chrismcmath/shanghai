@@ -6,7 +6,7 @@ namespace Shanghai.Entities {
     public class Target : Entity {
         public static readonly string EVENT_TARGET_UPDATED = "EVENT_TARGET_UPDATED";
 
-        public float Health = 100f;
+        public float Health = ShanghaiConfig.Instance.MaxHealth;
         private ShanghaiConfig _Config;
 
         public Target() {}

@@ -26,12 +26,10 @@ namespace Shanghai.Path {
             if (cellKey == _CurrentCell) return;
             _CurrentCell = cellKey;
 
-            if (_Model.CanDraw) {
-                if (_Model.Grid.ValidateCellInput(cellKey, _Path)){
-                    _Path.Add(cellKey);
-                    if (ShanghaiUtils.IsEndPoint(_Model.Grid.GetCell(cellKey))) {
-                        _Model.CanDraw = false;
-                    }
+            if (_Model.Grid.ValidateCellInput(cellKey, _Path)){
+                _Path.Add(cellKey);
+                if (ShanghaiUtils.IsEndPoint(_Model.Grid.GetCell(cellKey))) {
+                    _Model.CanDraw = false;
                 }
             }
         }

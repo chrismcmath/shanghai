@@ -9,9 +9,10 @@ namespace Shanghai.Controllers {
 
         public List<AudioSource> _Sources;
 
-        private int _CurrentSource = 0;
+        private int _CurrentSource;
 
         public void Awake() {
+            _CurrentSource = Random.Range(0, _Sources.Count -1);
             _Sources[_CurrentSource].Play();
         }
 

@@ -143,13 +143,21 @@ namespace Shanghai {
         }
 
         public void TickMissions(float delta) {
+            List<Mission> garbage = new List<Mission>();
             foreach (Mission mission in _Model.Missions) {
                 if (!mission.IsActive && mission.IsTTD(delta)) {
+                    garbage.Add(mission);
+
                     PlayableCell cell = _Model.Grid.GetCell(mission.CellKey);
                     cell.TargetID = "";
                     cell.ClientID = "";
                     Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
                 }
+            }
+
+            /* Garbage collection */
+            foreach (Mission mission in garbage) {
+                _Model.Missions.Remove(mission);
             }
         }
 

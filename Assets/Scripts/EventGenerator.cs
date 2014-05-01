@@ -34,7 +34,7 @@ namespace Shanghai {
         }
 
         public bool GenerateSource() {
-            float bountyDeviance = Random.Range(0f,1f)*Random.Range(0f,1f) * (float) (_Config.BountyMax - _Config.BountyMin);
+            float bountyDeviance = Mathf.Pow(Random.Range(0f,1f), _Config.BountyDeviancePower) * (float) (_Config.BountyMax - _Config.BountyMin);
             float bounty = bountyDeviance + _Config.BountyMin;
         
             Target target = _Model.Targets.ElementAt(Random.Range(0, _Model.Targets.Count)).Value;

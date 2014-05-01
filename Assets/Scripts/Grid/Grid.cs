@@ -31,9 +31,8 @@ namespace Shanghai.Grid {
         public bool ValidateCellInput(IntVect2 key, List<IntVect2> path) {
             PlayableCell cell = GetCell(key);
             if (CellIsConnected(key, path) &&
-                    CheckPrevCellPositions(key, path) &&
-                    cell.Valid) {
-                cell.Valid = false;
+                    GetCell(key).IsFree() &&
+                    CheckPrevCellPositions(key, path)) {
                 UpdateCellPipeType(cell, path);
                 Messenger<PlayableCell>.Broadcast(PlayableCell.EVENT_CELL_UPDATED, cell);
                 return true;
@@ -142,6 +141,8 @@ namespace Shanghai.Grid {
         private bool CheckPrevCellPositions(IntVect2 key, List<IntVect2> path) {
             if (CellInPath(key, path)) {
                 Messenger.Broadcast(EVENT_MISSION_FAILED);
+                return false;
+            } else if (path.Count > 1 && GetCell(path[path.Count -1]).HasMission()) {
                 return false;
             }
             return true;

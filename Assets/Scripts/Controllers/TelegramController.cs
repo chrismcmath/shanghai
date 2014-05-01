@@ -7,7 +7,7 @@ namespace Shanghai.Controllers {
     public class TelegramController : MonoBehaviour {
         public static readonly string EVENT_TELEGRAM_END_DRAG = "EVENT_TELEGRAM_END_DRAG";
         public static readonly string EVENT_TELEGRAM_DROPPED = "EVENT_TELEGRAM_DROPPED";
-        public const float DESTROY_WAIT_TIME = 1.0f;
+        public const float DESTROY_WAIT_TIME = 0.1f;
 
         public UILabel TargetLabel;
         public UILabel BountyLabel;

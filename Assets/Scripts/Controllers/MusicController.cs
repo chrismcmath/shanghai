@@ -11,8 +11,8 @@ namespace Shanghai.Controllers {
 
         private int _CurrentSource;
 
-        public void Awake() {
-            _CurrentSource = Random.Range(0, _Sources.Count -1);
+        public void Start() {
+            _CurrentSource = Random.Range(0, _Sources.Count);
             _Sources[_CurrentSource].Play();
         }
 

@@ -32,11 +32,14 @@ namespace Shanghai.Grid {
             Progress = 0.0f;
             TotalProgress = 0.0f;
             Pipe = PipeType.NONE;
-            Valid = true;
         }
 
         public bool IsFree() {
-            return Pipe == PipeType.NONE && ClientID == "" && TargetID == "";
+            return Pipe == PipeType.NONE;
+        }
+
+        public bool HasMission() {
+            return ClientID != "" || TargetID != "";
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Shanghai {
 
         public int BountyMin = 50;
         public int BountyMax = 2000;
+        public float BountyDeviancePower = 3.0f;
 
         public float MissionWaitTimeMedium = 5.0f;
         public float MissionWaitTimeDeviance = 2.0f;

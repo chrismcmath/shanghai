@@ -75,7 +75,7 @@ namespace Shanghai.Grid {
             List<PlayableCell> availableCells = new List<PlayableCell>();
             foreach (List<PlayableCell> row in _Cells) {
                 foreach (PlayableCell cell in row) {
-                    if (cell.IsFree()) {
+                    if (!cell.HasMission() && cell.IsFree()) {
                         availableCells.Add(cell);
                     }
                 }
